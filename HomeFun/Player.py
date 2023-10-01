@@ -72,7 +72,7 @@ class playGame:
         if scenario == "Lose the Game":
             remoteness = math.inf
             for m in list_of_moves:
-                if Solver.memo[m] == "Lost the Game":
+                if Solver.memo[m] == "Lose the Game":
                     remoteness = min(Solver.remoteness[m], remoteness)
         elif scenario == "Draw the Game":
             remoteness = 0
@@ -82,7 +82,7 @@ class playGame:
         else:
             remoteness = 0
             for m in list_of_moves:
-                if Solver.memo[m] == "Lose the Game":
+                if Solver.memo[m] == "Win the Game":
                     remoteness = max(Solver.remoteness[m], remoteness)
             
         return scenario, remoteness
@@ -146,7 +146,7 @@ class playGame:
         self.position = self.prevPositions.pop()
         
 
-g = playGame()
+g = playGame(True, True)
 g.chooseMode()
 while Game.PrimitiveValue(g.position) == "Not Primitive":
     g.doMove()

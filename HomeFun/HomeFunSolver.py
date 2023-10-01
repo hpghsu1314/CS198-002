@@ -100,4 +100,3 @@ def analysis():
 
 Solve(init_pos)
 analysis()
-print(memo)

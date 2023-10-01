@@ -3,8 +3,6 @@ ROW = 3
 COLUMN = 3
 IN_A_ROW = 3
 
-#GameModes
-gameModes = ["Normal", "Misere", "OnlyX", "MisereOnlyX", "OrderFirstChaos", "ChaosFirstOrder"]
 
 #Different game modes
 MISERE = False
