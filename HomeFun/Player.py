@@ -59,12 +59,11 @@ class playGame:
                     position += " [ ] "
             position += "\n"
         print(position)
-    
             
     def bestScenario(self, list_of_moves):
         scenario = "Win the Game"
         for move in list_of_moves:
-            if Solver.memo[move] == "Lose the Game":
+            if self.solvedGame[move] == "Lose the Game":
                 scenario = "Lose the Game"
                 break
             elif Solver.memo[move] == "Draw the Game":
@@ -92,15 +91,12 @@ class playGame:
         print(Solver.memo[p] + " in " + str(Solver.remoteness[p]) + "\n")
         legalMoves = Game.GenerateMoves(self.position)
         if self.cpu and not self.p1Turn:
-            possible_moves = []
             best_hash = []
             for move in legalMoves:
-                possible_moves.append(Game.DoMove(self.position, move))
-            for board in possible_moves:
-                best_hash.append(Solver.find_canonical(Game.check_symmetry(board)))
+                best_hash.append(Solver.find_canonical(Game.check_symmetry(Game.DoMove(self.position, move))))
             scenario, remoteness = self.bestScenario(best_hash)
             true_index = 0
-            for index in range(len(possible_moves)):
+            for index in range(len(best_hash)):
                 if Solver.memo[best_hash[index]] == scenario and Solver.remoteness[best_hash[index]] == remoteness:
                     true_index = index
                     break
@@ -108,7 +104,8 @@ class playGame:
             self.p1Turn = not self.p1Turn
             if Game.PrimitiveValue(self.position) != "Not Primitive":
                 self.printCurrPos()
-                print(f"You have {Game.PrimitiveValue(self.position)}")
+                if self.cpu:
+                    print(f"You have {Game.PrimitiveValue(self.position)}")
                 return
             
         legalMoves = Game.GenerateMoves(self.position)
@@ -137,7 +134,10 @@ class playGame:
             self.undoMove()
             self.p1Turn = not self.p1Turn
         if Game.PrimitiveValue(self.position) != "Not Primitive":
-            print(f"{p1 if self.p1Turn else p2} {Game.PrimitiveValue(self.position)}")
+            if not self.cpu:
+                print(f"{p1 if self.p1Turn else p2} {Game.PrimitiveValue(self.position)}")
+            else:
+                print(f"Computer has {Game.PrimitiveValue(self.position)}")
             
     def initialize(self):
         self.position = Solver.init_pos

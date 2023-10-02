@@ -2,6 +2,7 @@ import HomeFunGame2 as Game
 
 memo = {}
 remoteness = {}
+PYTHONHASHSEED = 18
 
 opposites = {"Win the Game": "Lose the Game", "Draw the Game": "Draw the Game", "Lose the Game": "Win the Game"}
 prim_value_chart = {"Lost": "Lose the Game", "Win": "Win the Game", "Draw": "Draw the Game"}
@@ -9,7 +10,7 @@ total_prim = {"Win": 0, "Lost": 0, "Draw": 0, "Total" : 0}
 opp_prim_value_chart = {"Lose the Game" : "Lost", "Win the Game": "Win", "Draw the Game": "Draw"}
 
 symmetry = True
-
+done = False
 def update_remoteness(position, results, value):
     if value == "Lose the Game":
         remote_num = max([remoteness[r[0]] for r in results if r[1] == value]) + 1
@@ -19,10 +20,8 @@ def update_remoteness(position, results, value):
 
 def find_canonical(list_of_items):
     item = list_of_items[0]
-    item_hash = hash(item)
     for i in list_of_items:
-        if abs(hash(i)) < abs(item_hash):
-            item_hash = hash(i)
+        if i < item:
             item = i
     return item
 
@@ -96,7 +95,3 @@ def analysis():
     lose = f"{lose}"
     draw = f"{draw}"
     print("Total   " + win + " " * (8 - len(win)) + lose + " " * (8 - len(lose)) + draw + " " * (8 - len(draw)) + total)
-
-
-Solve(init_pos)
-analysis()
