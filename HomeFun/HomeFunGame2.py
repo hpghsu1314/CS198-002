@@ -12,7 +12,7 @@ if MISERE_ONLYX:
     MISERE, ONLYX = True, True
 ORDER_CHAOS = False
 ORDER_FIRST = False
-ORDER_CHAOS_SYMMETRIES = True
+ORDER_CHAOS_SYMMETRIES = False
 
 def matrix_to_str(matrix):
     string = ""
