@@ -1,0 +1,58 @@
+With only 1 linear layer we have around 47-48% accuracy
+
+Model: tttModelV1.pth
+Size: 15kB
+Accuracy: 0.9899598393574297
+Trained with:
+    learning_rate = 0.02
+    epochs = 7000
+Layers:
+    nn.Linear(9,128),
+    nn.ReLU(),
+    nn.Linear(128,16)
+
+
+Model: tttModelV2.pth
+Size: 10kB
+Accuracy: 0.8369843008397225
+Trained with:
+    learning_rate = 0.05
+    epochs = 10000
+Layers:
+    nn.Linear(9,80),
+    nn.ReLU(),
+    nn.Linear(80,16)
+
+
+Model: tttModelV3.pth
+Size: 9kB
+Accuracy: 0.90470975
+Trained with:
+    learning_rate = 0.05
+    epochs = 10000
+Layers:
+    nn.Linear(9,64),
+    nn.Sigmoid(),
+    nn.Linear(64,16)
+
+
+Model: tttModelV4.pth
+Size: 7kB
+Accuracy: 0.8103322380430814
+Trained with:
+    learning_rate = 0.03
+    epochs = 20000
+Layers:
+    nn.Linear(9,48),
+    nn.Sigmoid(),
+    nn.Linear(48,16)
+
+
+Model: tttModelV5.pth (This model is the most basic model)
+Size: 2kB
+Accuracy: 0.48028477546549836
+Trained with:
+    learning_rate = 0.01
+    epochs = 10000
+Layers:
+    nn.Linear(9,16)
