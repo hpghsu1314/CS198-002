@@ -16,6 +16,19 @@ class tttdata(Dataset):
     
     def __len__(self):
         return self.length
+    
+
+class tttRemotenessData(Dataset):
+    def __init__(self, input, output):
+        self.x = torch.tensor(input, dtype=torch.float32)
+        self.y = torch.tensor(output, dtype=torch.float32)
+        self.length = len(self.x)
+        
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+    
+    def __len__(self):
+        return self.length
 
 
 class NeuralNetwork(nn.Module):
@@ -23,11 +36,8 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         
         self.linear_relu = nn.Sequential(
-            nn.Linear(5,16),
-            nn.LogSigmoid(),
-            nn.Linear(16,32),
-            nn.ReLU(),
-            nn.Linear(32,16)
+            nn.Sigmoid(),
+            nn.Linear(in_features=5, out_features=9),
         )
         
     def forward(self, input):
@@ -77,11 +87,18 @@ class Classification:
         dataloader = DataLoader(tttdata(self.results[0], self.results[1]))
         return dataloader
 
-learning_rate = 0.01
+    def createRemotenessDataloader(self):
+        self.vectorizeKeys()
+        tempRemoteness = [[1 if self.remoteness[n] - 1 == p else 0 for p in range(9)] for n in range(len(self.remoteness))]
+        dataloader = DataLoader(tttRemotenessData(self.results[0], tempRemoteness))
+        return dataloader
+
+learning_rate = 0.003
 epochs = 700
 
+best_acc = 0.0
 data = Classification(path)
-dl = data.createCustomDataloader()
+dl = data.createRemotenessDataloader()
 model = NeuralNetwork()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 loss_fn = nn.CrossEntropyLoss()
@@ -90,25 +107,26 @@ losses = []
 accuracy = []
 
 def accuracy_calc(corr, pred):
-    c = 0
-    for n in range(len(corr)):
-        cl, pl = list(corr[n]), pred[n].tolist()
-        cm, pm = max(cl), max(pl)
-        cidx, pidx = cl.index(cm), pl.index(pm)
-        if cidx == pidx:
-            c += 1
-    return c / len(corr)
+    cl, pl = corr.tolist()[0], pred.tolist()[0]
+    cm, pm = max(cl), max(pl)
+    cidx, pidx = cl.index(cm), pl.index(pm)
+    return 1 if cidx == pidx else 0
 
 
 for epoch in range(epochs):
+    accurate = 0
     for __, (x_train, y_train) in enumerate(dl):
+        optimizer.zero_grad()
         output = model(x_train)
         loss = loss_fn(output, y_train)
-        predicted = model(torch.tensor(data.results[0], dtype=torch.float32))
-        #acc = (predicted.reshape(-1).detach().numpy().round()).mean()
-        optimizer.zero_grad()
+        accurate += accuracy_calc(y_train, output)
         loss.backward()
         optimizer.step()
+    acc = accurate / len(dl)
     losses.append(loss)
     accuracy.append(acc)
     print("epoch {}\tloss : {}\t accuracy : {}".format(epoch,loss,acc))
+    if acc > best_acc:
+        best_acc = acc
+        torch.save(model.state_dict(), "tttHashModel.pth")
+print(best_acc)

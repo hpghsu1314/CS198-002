@@ -1,7 +1,7 @@
 With only 1 linear layer we have around 47-48% accuracy
 
 Model: tttModelV1.pth
-Size: 15kB
+Size: 14.7kB
 Accuracy: 0.9899598393574297
 Trained with:
     learning_rate = 0.02
@@ -13,7 +13,7 @@ Layers:
 
 
 Model: tttModelV2.pth
-Size: 10kB
+Size: 9.91kB
 Accuracy: 0.8369843008397225
 Trained with:
     learning_rate = 0.05
@@ -25,7 +25,7 @@ Layers:
 
 
 Model: tttModelV3.pth
-Size: 9kB
+Size: 8.28kB
 Accuracy: 0.90470975
 Trained with:
     learning_rate = 0.05
@@ -37,7 +37,7 @@ Layers:
 
 
 Model: tttModelV4.pth
-Size: 7kB
+Size: 6.66kB
 Accuracy: 0.8103322380430814
 Trained with:
     learning_rate = 0.03
@@ -49,10 +49,20 @@ Layers:
 
 
 Model: tttModelV5.pth (This model is the most basic model)
-Size: 2kB
+Size: 1.72kB
 Accuracy: 0.48028477546549836
 Trained with:
     learning_rate = 0.01
     epochs = 10000
 Layers:
     nn.Linear(9,16)
+
+
+Model: tttHashModelV1.pth (This model is the most basic model that uses hash values)
+Size: 1.49kB
+Accuracy: 0.4419496166484118
+Trained with:
+    learning_rate = 0.0005
+    epochs = 199 (terminated by hand)
+Layers:
+    nn.Linear(5,16)
